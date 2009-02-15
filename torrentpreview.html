@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <style type="text/css" media="screen">
+        html,body{
+            margin:0;
+            padding:0;
+        }
+        html{
+    		background-color:rgb(11%,11%,11%);
+    	}
+    	#title{
+    	    background:#111;
+    	    color:#666;
+            padding-bottom:.2em;
+            margin-bottom:1em;
+    	}
+      #title #torrentname h2{
+            line-height:1em;
+            background:#000;
+            color:#273F51;
+            padding:.2em;
+            padding-left:1em;
+        }
+      #main{
+            clear:both;
+            border:0;
+            width:100%;
+        }
+      #size{
+            width:7em;
+        }
+    	.odd{
+    	    background:#333;
+    	}
+    	.even{
+    	    background:#222;
+    	}
+    </style>
+    <head>
+<body>
+    <div id="title">
+        <div id="torrentname">
+            <h2>{TORRENT_NAME}</h2>
+        </div>
+        <div id="info">
+            {TORRENT_INFO}
+        </div>
+    </div>
+    <table id="main">
+        <tr><th>File Name</th><th id="size">Size</th></tr>
+        <tr class="odd">
+            <td>Some filename - [01x02] - something.avi</td>
+            <td>740.0MB</td>
+        </tr>
+        <tr class="even">
+            <td>Some filename - [01x04] - another thing.avi</td>
+            <td>740.0MB</td>
+        </tr>
+    </table>
+</body>
+</html>
