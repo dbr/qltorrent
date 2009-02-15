@@ -21,7 +21,7 @@
 	<key>CFBundleIconFile</key>
 	<string></string>
 	<key>CFBundleIdentifier</key>
-	<string>uk.co.dbrweb.qltorrent.${PRODUCT_NAME:identifier}</string>
+	<string>uk.co.dbrweb.${PRODUCT_NAME:identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
