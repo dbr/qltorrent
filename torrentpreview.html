@@ -11,6 +11,7 @@
         }
         html{
     		background-color:rgb(11%,11%,11%);
+            color:#ccc;
     	}
     	#title{
     	    background:#111;
@@ -52,14 +53,7 @@
     </div>
     <table id="main">
         <tr><th>File Name</th><th id="size">Size</th></tr>
-        <tr class="odd">
-            <td>Some filename - [01x02] - something.avi</td>
-            <td>740.0MB</td>
-        </tr>
-        <tr class="even">
-            <td>Some filename - [01x04] - another thing.avi</td>
-            <td>740.0MB</td>
-        </tr>
+        {TORRENT_FILES}
     </table>
 </body>
 </html>
