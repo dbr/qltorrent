@@ -228,7 +228,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Library/QuickLook;
+				INSTALL_PATH = $HOME/Library/QuickLook;
 				PRODUCT_NAME = qltorrent;
 				WRAPPER_EXTENSION = qlgenerator;
 			};
@@ -241,7 +241,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Library/QuickLook;
+				INSTALL_PATH = $HOME/Library/QuickLook;
 				PRODUCT_NAME = qltorrent;
 				WRAPPER_EXTENSION = qlgenerator;
 			};
