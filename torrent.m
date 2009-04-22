@@ -40,7 +40,7 @@ NSDictionary *getTorrentInfo(NSURL *url)
 	// Read raw file, and de-bencode
 	NSData *rawdata = [NSData dataWithContentsOfURL:url];
 	NSData *torrent = [BEncoding objectFromEncodedData:rawdata];
-
+    
 	NSData *infoData = [torrent valueForKey:@"info"];
 
 	// Retrive interesting data
@@ -74,6 +74,8 @@ NSDictionary *getTorrentInfo(NSURL *url)
 		[currentFile setObject:currentPath forKey:@"filename"];
 		[allFiles addObject:currentFile];
 	}
+    
+    // Store interesting data in dictionary, and return it
 
 	NSMutableDictionary *ret = [NSMutableDictionary dictionary];
     if(length != NULL) [ret setObject:length forKey:@"length"];
@@ -82,7 +84,7 @@ NSDictionary *getTorrentInfo(NSURL *url)
 	if(isPrivate != NULL) [ret setObject:isPrivate forKey:@"isPrivate"];
 	if(allFiles != NULL) [ret setObject:allFiles forKey:@"files"];
     [ret setObject:[NSNumber numberWithInteger:totalSize] forKey:@"totalSize"];
-	
+
 	return ret;
 }
 
