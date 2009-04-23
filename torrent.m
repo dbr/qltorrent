@@ -111,16 +111,18 @@ NSData *getTorrentPreview(NSURL *url)
              [torrentInfo objectForKey:@"torrentName"],
              @"[Unknown]");
 
-    // Replace torrent size witht length or totalSize
+    // Replace torrent size with length or totalSize
     NSNumber *size;
     if([torrentInfo objectForKey:@"length"] != NULL){
-         size = [torrentInfo objectForKey:@"length"];
+        // For single-file torrents
+        size = [torrentInfo objectForKey:@"length"];
     }else{
+        // Multi-file torrents don't have length, so use the total file size
         size = [torrentInfo objectForKey:@"totalSize"];
     }
+    
     NSString *torrentInfoString = [NSString stringWithFormat:@"<ul><li>Size: %@</li></ul>",
                                    stringFromFileSize([size integerValue])];
-
     replacer(html,
              @"{TORRENT_INFO}",
              torrentInfoString,
