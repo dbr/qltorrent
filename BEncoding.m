@@ -65,16 +65,16 @@ typedef struct {
 	char buffer[32]; // Small buffer to hold length strings. Needs to hold a 64bit number.
 	
 	memset(buffer, 0, sizeof(buffer)); // Ensure the buffer is zeroed
-
+    
 	if ([object isKindOfClass:[NSData class]]) 
 	{
 		// Encode a chunk of bytes from an NSData.
 		
 		snprintf(buffer, 32, "%lu:", [object length]);
-
+        
 		[data appendBytes:buffer length:strlen(buffer)];
 		[data appendData:object];
-
+        
 		return data;
 	} 
 	if ([object isKindOfClass:[NSString class]]) 
@@ -83,10 +83,10 @@ typedef struct {
 		
 		NSData *stringData = [object dataUsingEncoding:NSUTF8StringEncoding];
 		snprintf(buffer, 32, "%lu:", [stringData length]);
-
+        
 		[data appendBytes:buffer length:strlen(buffer)];
 		[data appendData:stringData];
-
+        
 		return data;
 	} 
 	else if ([object isKindOfClass:[NSNumber class]]) 
@@ -94,9 +94,9 @@ typedef struct {
 		// Encode an NSNumber
 		
 		snprintf(buffer, 32, "i%llue", [object longLongValue]);
-
+        
 		[data appendBytes:buffer length:strlen(buffer)];
-
+        
 		return data;
 	}
 	else if ([object isKindOfClass:[NSArray class]]) 
@@ -136,7 +136,7 @@ typedef struct {
 		[data appendBytes:"e" length:1];
 		return data;
 	}
-
+    
 	return nil;
 }
 
@@ -204,13 +204,13 @@ typedef struct {
 	NSMutableArray *array = [[NSMutableArray alloc] init];
 	
 	assert(data->bytes[data->offset] == 'l');
-
+    
 	data->offset++; // Move off the l so we point to the first encoded item.
 	
 	while (data->bytes[data->offset] != 'e') {
 		[array addObject:[BEncoding objectFromData:data]];
 	}
-
+    
 	data->offset++; // Always move off the end of the encoded item.
 	
 	return array;
@@ -235,7 +235,7 @@ typedef struct {
 				[dictionary setValue:value forKey:key];
 		}
 	}
-
+    
 	data->offset++; // Move off the e so we point to the next encoded item.
 	
 	return dictionary;
@@ -247,19 +247,19 @@ typedef struct {
 	 * of the encoded entity, for example the i in the bencoded integer "i18e" */
 	
 	switch (data->bytes[data->offset]) {
-	case 'l':
-		return [BEncoding arrayFromEncodedData:data];
-		break;
-	case 'd':
-		return [BEncoding dictionaryFromEncodedData:data];
-		break;
-	case 'i':
-		return [BEncoding numberFromEncodedData:data];
-		break;
-	default:
-		if (data->bytes[data->offset] >= '0' && data->bytes[data->offset] <= '9')
-			return [BEncoding dataFromEncodedData:data];
-		break;
+        case 'l':
+            return [BEncoding arrayFromEncodedData:data];
+            break;
+        case 'd':
+            return [BEncoding dictionaryFromEncodedData:data];
+            break;
+        case 'i':
+            return [BEncoding numberFromEncodedData:data];
+            break;
+        default:
+            if (data->bytes[data->offset] >= '0' && data->bytes[data->offset] <= '9')
+                return [BEncoding dataFromEncodedData:data];
+            break;
 	}
 	
 	// If we reach here, it doesn't appear that this is bencoded data. So, we'll
@@ -276,7 +276,7 @@ typedef struct {
 	data.bytes = [sourceData bytes];
 	data.length = [sourceData length];
 	data.offset = 0;
-
+    
 	return [BEncoding objectFromData:&data];
 }
 
