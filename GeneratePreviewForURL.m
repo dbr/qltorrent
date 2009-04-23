@@ -12,13 +12,13 @@
 
 OSStatus GeneratePreviewForURL(void *thisInterface, QLPreviewRequestRef preview, CFURLRef url, CFStringRef contentTypeUTI, CFDictionaryRef options)
 {
-	NSLog(@"Quicklook torrent thingy going!");
-	CFDataRef data = (CFDataRef) getTorrentPreview((NSURL*) url);
-	if(data){
-		CFDictionaryRef props = (CFDictionaryRef) [NSDictionary dictionary];
-		QLPreviewRequestSetDataRepresentation(preview, data, kUTTypeHTML, props);
-	}
-	
+    NSLog(@"Quicklook torrent thingy going!");
+    CFDataRef data = (CFDataRef) getTorrentPreview((NSURL*) url);
+    if(data){
+        CFDictionaryRef props = (CFDictionaryRef) [NSDictionary dictionary];
+        QLPreviewRequestSetDataRepresentation(preview, data, kUTTypeHTML, props);
+    }
+    
     return noErr;
 }
 
