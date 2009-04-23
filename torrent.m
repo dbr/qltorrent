@@ -45,7 +45,7 @@ NSDictionary *getTorrentInfo(NSURL *url)
 
 	// Retrive interesting data
 	NSString *announce = stringFromData(torrent, @"announce");
-
+    
 	NSString *torrentName = stringFromData(infoData, @"name");
 
     NSString *length = [infoData valueForKey:@"length"];
@@ -66,20 +66,19 @@ NSDictionary *getTorrentInfo(NSURL *url)
 		NSData *currentFileData = [filesData objectAtIndex:i];
 		NSString *currentSize = [currentFileData valueForKey:@"length"];
         
-        NSLog(@"Current size: %@", currentSize);
-        
         NSMutableDictionary *currentFile = [NSMutableDictionary dictionaryWithObject:currentSize forKey:@"length"];
 
         totalSize = totalSize + [currentSize integerValue];
 
         NSMutableString *currentFilePath = [NSMutableString string];
+        
+        // Looping over path segments"
         for(int path_i = 0; path_i < [[currentFileData valueForKey:@"path"] count] ; path_i++) {
             NSData *currentSegmentData = [[currentFileData valueForKey:@"path"] objectAtIndex:path_i];
             
             NSString *currentPathSegment = [NSString stringWithUTF8String:[currentSegmentData bytes]];
             [currentFilePath appendFormat:@"/%@", currentPathSegment];
         }
-        NSLog(@"currentFilePath: %@", currentFilePath);
         [currentFile setObject:currentFilePath forKey:@"filename"];
         [allFiles addObject:currentFile];
 	}
@@ -99,16 +98,20 @@ NSDictionary *getTorrentInfo(NSURL *url)
 
 NSData *getTorrentPreview(NSURL *url)
 {
+    // Load template HTML
 	NSString *templateFile = [NSString stringWithContentsOfFile:[[NSBundle bundleWithIdentifier: @"uk.co.dbrweb.qltorrent"]
 										pathForResource:@"torrentpreview" ofType:@"html"]];
 	NSDictionary *torrentInfo = getTorrentInfo(url);
     NSMutableString *html = [NSMutableString stringWithString:templateFile];
 
+    
+    // Replace torrentName
     replacer(html,
              @"{TORRENT_NAME}",
              [torrentInfo objectForKey:@"torrentName"],
 			 @"[Unknown]");
 
+    // Replace torrent size witht length or totalSize
     NSNumber *size;
     if([torrentInfo objectForKey:@"length"] != NULL){
          size = [torrentInfo objectForKey:@"length"];
@@ -123,6 +126,7 @@ NSData *getTorrentPreview(NSURL *url)
              torrentInfoString,
 			 @"[Unknown]");
 
+    // Replace files
     NSMutableArray *files = [torrentInfo objectForKey:@"files"];
     if(files != NULL)
 	{
