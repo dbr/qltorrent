@@ -65,14 +65,23 @@ NSDictionary *getTorrentInfo(NSURL *url)
 	for (int i = 0; i < [filesData count]; i++) {
 		NSData *currentFileData = [filesData objectAtIndex:i];
 		NSString *currentSize = [currentFileData valueForKey:@"length"];
-		NSMutableDictionary *currentFile = [NSMutableDictionary dictionaryWithObject:currentSize forKey:@"length"];
+        
+        NSLog(@"Current size: %@", currentSize);
+        
+        NSMutableDictionary *currentFile = [NSMutableDictionary dictionaryWithObject:currentSize forKey:@"length"];
 
         totalSize = totalSize + [currentSize integerValue];
 
-		NSData *currentPathData = [[currentFileData valueForKey:@"path"] objectAtIndex:0];
-		NSString *currentPath = [NSString stringWithUTF8String:[currentPathData bytes]];
-		[currentFile setObject:currentPath forKey:@"filename"];
-		[allFiles addObject:currentFile];
+        NSMutableString *currentFilePath = [NSMutableString string];
+        for(int path_i = 0; path_i < [[currentFileData valueForKey:@"path"] count] ; path_i++) {
+            NSData *currentSegmentData = [[currentFileData valueForKey:@"path"] objectAtIndex:path_i];
+            
+            NSString *currentPathSegment = [NSString stringWithUTF8String:[currentSegmentData bytes]];
+            [currentFilePath appendFormat:@"/%@", currentPathSegment];
+        }
+        NSLog(@"currentFilePath: %@", currentFilePath);
+        [currentFile setObject:currentFilePath forKey:@"filename"];
+        [allFiles addObject:currentFile];
 	}
     
     // Store interesting data in dictionary, and return it
