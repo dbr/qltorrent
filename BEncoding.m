@@ -74,7 +74,6 @@ typedef struct {
         
         [data appendBytes:buffer length:strlen(buffer)];
         [data appendData:object];
-        
         return data;
     } 
     if ([object isKindOfClass:[NSString class]]) 
@@ -136,7 +135,7 @@ typedef struct {
         [data appendBytes:"e" length:1];
         return data;
     }
-    
+    [data autorelease];
     return nil;
 }
 
@@ -153,11 +152,13 @@ typedef struct {
         [numberString appendFormat:@"%c", data->bytes[data->offset++]];
     }
     
-    if (![[NSScanner scannerWithString:numberString] scanLongLong:&number])
+    if (![[NSScanner scannerWithString:numberString] scanLongLong:&number]){
+        [numberString autorelease];
         return nil;
+    }
     
     data->offset++; // Always move the offset off the end of the encoded item.
-    
+    [numberString autorelease];
     return [NSNumber numberWithLongLong:number];
 }
 
@@ -166,8 +167,11 @@ typedef struct {
     NSMutableString *dataLength = [[NSMutableString alloc] init];
     NSMutableData *decodedData = [[NSMutableData alloc] init];
     
-    if (data->bytes[data->offset] < '0' | data->bytes[data->offset] > '9')
+    if (data->bytes[data->offset] < '0' | data->bytes[data->offset] > '9'){
+        [decodedData autorelease];
+        [dataLength autorelease];
         return nil; // Needed because we must fail to create a dictionary if it isn't a string.
+    }
     
     // strings are special; they start with a number so we don't move by one.
     
@@ -175,15 +179,20 @@ typedef struct {
         [dataLength appendFormat:@"%c", data->bytes[data->offset++]];
     }
     
-    if (data->bytes[data->offset] != ':')
+    if (data->bytes[data->offset] != ':'){
+        [decodedData autorelease];
+        [dataLength autorelease];
         return nil; // We must have overrun the end of the bencoded string.
+    }
     
     data->offset++;
     
     [decodedData appendBytes:data->bytes+data->offset length:[dataLength integerValue]];
     
     data->offset += [dataLength integerValue]; // Always move the offset off the end of the encoded item.
-    
+
+    [decodedData autorelease];
+    [dataLength autorelease];
     return decodedData;
 }
 
