@@ -74,7 +74,8 @@ typedef struct {
         
         [data appendBytes:buffer length:strlen(buffer)];
         [data appendData:object];
-        return data;
+        [object autorelease];
+        return [data autorelease];
     } 
     if ([object isKindOfClass:[NSString class]]) 
     {
@@ -86,7 +87,7 @@ typedef struct {
         [data appendBytes:buffer length:strlen(buffer)];
         [data appendData:stringData];
         
-        return data;
+        return [data autorelease];
     } 
     else if ([object isKindOfClass:[NSNumber class]]) 
     {
@@ -96,7 +97,7 @@ typedef struct {
         
         [data appendBytes:buffer length:strlen(buffer)];
         
-        return data;
+        return [data autorelease];
     }
     else if ([object isKindOfClass:[NSArray class]]) 
     {
@@ -110,7 +111,7 @@ typedef struct {
         
         [data appendBytes:"e" length:1];
         
-        return data;
+        return [data autorelease];
     }
     else if ([object isKindOfClass:[NSDictionary class]]) 
     {
@@ -133,7 +134,7 @@ typedef struct {
         }
         
         [data appendBytes:"e" length:1];
-        return data;
+        return [data autorelease];
     }
     [data autorelease];
     return nil;
@@ -205,7 +206,7 @@ typedef struct {
     if (decodedData == nil)
         return nil;
     
-    return [[NSString alloc] initWithBytes:[decodedData bytes] length:[decodedData length] encoding:NSUTF8StringEncoding];
+    return [[[NSString alloc] initWithBytes:[decodedData bytes] length:[decodedData length] encoding:NSUTF8StringEncoding] autorelease];
 }
 
 +(NSArray *)arrayFromEncodedData:(BEncodingData *)data
@@ -222,7 +223,7 @@ typedef struct {
     
     data->offset++; // Always move off the end of the encoded item.
     
-    return array;
+    return [array autorelease];
 }
 
 +(NSDictionary *)dictionaryFromEncodedData:(BEncodingData *)data
@@ -247,7 +248,7 @@ typedef struct {
     
     data->offset++; // Move off the e so we point to the next encoded item.
     
-    return dictionary;
+    return [dictionary autorelease];
 }
 
 +(id)objectFromData:(BEncodingData *)data
